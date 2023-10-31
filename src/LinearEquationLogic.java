@@ -5,6 +5,7 @@ public class LinearEquationLogic {
     private LinearEquation coords;
     private Scanner scan;
     private boolean running;
+    private boolean dupe;
 
     public LinearEquationLogic() {
         coords = null;
@@ -15,12 +16,12 @@ public class LinearEquationLogic {
     public void start() {
         System.out.println("Welcome to the linear equation calculator!");
         while (running) {
-            initialize();
+            run();
             restart();
         }
     }
 
-    private void initialize() {
+    private void run() {
         System.out.print("Enter Coordinate 1: ");
         String coord1 = scan.nextLine();
         System.out.print("Enter Coordinate 2: ");
@@ -30,14 +31,17 @@ public class LinearEquationLogic {
         int x_2 = Integer.parseInt(coord2.substring(1, coord2.indexOf(",")));
         int y_2 = Integer.parseInt(coord2.substring(coord2.indexOf(",") + 2, coord2.length() - 1));
         while (x_1 == x_2) {
-            System.out.print("Your X coordinates cannot be the same. Please enter a new x coordinate for the second one. (Eg: Enter in 1 rather than a coordinate)");
+            System.out.print("Your X coordinates cannot be the same. Please enter a new x value for the second one. (Eg: Enter in 1 rather than (1, 10))");
             x_2 = scan.nextInt();
+            dupe = true;
             }
-        coords = new LinearEquation(x_1, x_2, y_1, y_2);
-        coords.lineInfo();
-        System.out.print("Enter an x-value: ");
-        double x_value = scan.nextDouble();
-        System.out.println(coords.coordinateForX(x_value));
+        coords = new LinearEquation(x_1, y_1, x_2, y_2);
+        System.out.println(coords.lineInfo());
+        if (dupe != true) {
+            System.out.print("Enter an x-value: ");
+            double x_value = scan.nextDouble();
+            System.out.println(coords.coordinateForX(x_value));
+        }
         scan.nextLine();
     }
 
@@ -53,6 +57,8 @@ public class LinearEquationLogic {
             } else if (answer.equals("n")) {
                 running = false;
                 loop = false;
+                dupe = false;
+                System.out.println("Thank you for using the slope calculator, goodbye!");
             } else {
                 System.out.println("Invalid option, try again!");
             }
